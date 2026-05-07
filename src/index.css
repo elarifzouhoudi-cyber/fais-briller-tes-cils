@@ -1,0 +1,17 @@
+@import './styles/fonts.css';
+@import 'tailwindcss';
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #F8F6F0;
+  color: #000000;
+}
