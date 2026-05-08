@@ -1,116 +1,120 @@
 import { useState } from "react";
-import { useInView } from "./hooks/useInView";
+import { motion } from "motion/react";
 import { ChevronDown } from "lucide-react";
+import { useInView } from "./hooks/useInView";
 
 const faqs = [
   {
-    q: "Est-ce que les extensions de cils abiment les cils naturels ?",
-    a: "Non, quand la pose est realisee correctement par une professionnelle certifiee. Les extensions sont posees sur les cils matures et n'affectent pas la croissance. Il est important de respecter les conseils d'entretien et les delais de remplissage.",
+    question: "Combien de temps dure une pose complète ?",
+    answer:
+      "Une pose Cils à Cils dure environ 2h30 et une Pose Y Brésilienne environ 2h. Nous prenons le temps nécessaire pour un résultat parfait.",
   },
   {
-    q: "Combien de temps dure une pose d'extensions ?",
-    a: "La pose cils a cils dure environ 2h30, la Y bresilienne environ 2h. Comptez 1h pour un remplissage. Prevoyez d'arriver sans maquillage sur les yeux.",
+    question: "Les extensions abîment-elles les cils naturels ?",
+    answer:
+      "Non, lorsqu'elles sont posées par des professionnelles certifiées comme les nôtres. Nous utilisons des cils adaptés au poids que vos cils naturels peuvent supporter, et des colles hypoallergéniques de qualité médicale.",
   },
   {
-    q: "Quelle est la duree de vie des extensions ?",
-    a: "En moyenne 3 a 6 semaines selon votre cycle de croissance capillaire. Un remplissage toutes les 2-3 semaines permet de maintenir un resultat optimal.",
+    question: "Quelle est la durée de tenue des extensions ?",
+    answer:
+      "Les extensions suivent le cycle naturel de vos cils, soit environ 3 à 4 semaines. Un remplissage est recommandé toutes les 2 à 3 semaines pour un résultat toujours impeccable.",
   },
   {
-    q: "Comment se preparer avant la pose ?",
-    a: "Arrivez sans maquillage sur les yeux (mascara, eye-liner, fard a paupieres). Evitez les serums a base d'huile les jours precedents. Ne pas porter de lentilles pendant la pose.",
+    question: "Quelle est la différence entre Cils à Cils et Pose Y Brésilienne ?",
+    answer:
+      "La pose Cils à Cils consiste à appliquer un cil synthétique sur chaque cil naturel pour un effet naturel et élégant. La Pose Y Brésilienne utilise une technique innovante en forme de Y qui offre plus de volume et d'intensité, tout en restant légère et confortable.",
   },
   {
-    q: "Les extensions sont-elles compatibles avec tous les types de cils ?",
-    a: "Oui ! Lors de la consultation, j'evalue vos cils naturels pour choisir la technique et les extensions les plus adaptees a votre profil. Meme les cils fins ou clairsemes peuvent etre sublimes.",
+    question: "Puis-je me maquiller avec des extensions ?",
+    answer:
+      "Oui, mais nous recommandons d'éviter les mascaras waterproof et les démaquillants à base d'huile. Avec nos extensions, vous n'aurez de toute façon plus besoin de mascara !",
   },
   {
-    q: "Quels sont les conseils d'entretien post-pose ?",
-    a: "Evitez l'eau les 24 premieres heures. Brossez vos cils chaque matin avec une brosse fournie. Evitez les produits gras autour des yeux. Ne tirez jamais sur les extensions.",
+    question: "Quels produits utilisez-vous ?",
+    answer:
+      "Nous utilisons exclusivement des cils synthétiques premium de qualité médicale, des colles hypoallergéniques certifiées et testées dermatologiquement. Tous nos produits sont conformes aux normes européennes.",
   },
   {
-    q: "Peut-on mettre du mascara avec des extensions ?",
-    a: "Ce n'est pas necessaire et deconseille — c'est justement l'avantage des extensions ! Si vous souhaitez en mettre, utilisez uniquement du mascara specifique extensions, applique uniquement sur les pointes.",
+    question: "Comment préparer ma première pose ?",
+    answer:
+      "Venez sans maquillage sur les yeux, sans mascara. Évitez les crèmes grasses autour des yeux le jour de la pose. Nous vous fournirons toutes les instructions d'entretien après la séance.",
   },
 ];
 
-function FAQItem({ q, a, isOpen, onClick }: { q: string; a: string; isOpen: boolean; onClick: () => void }) {
-  return (
-    <div
-      className={`border rounded-xl overflow-hidden transition-all duration-200 ${
-        isOpen ? "border-[#D4AF37]/30 bg-[#D4AF37]/3" : "border-gray-100 bg-white"
-      }`}
-    >
-      <button
-        onClick={onClick}
-        className="w-full text-left px-6 py-5 flex items-center justify-between gap-4"
-      >
-        <span
-          className={`text-sm transition-colors ${isOpen ? "text-black" : "text-gray-800"}`}
-          style={{ fontWeight: 500 }}
-        >
-          {q}
-        </span>
-        <ChevronDown
-          className={`w-5 h-5 shrink-0 transition-transform duration-300 ${
-            isOpen ? "rotate-180 text-[#D4AF37]" : "text-gray-400"
-          }`}
-        />
-      </button>
-      <div
-        className="overflow-hidden transition-all duration-300"
-        style={{ maxHeight: isOpen ? "300px" : "0px" }}
-      >
-        <p className="px-6 pb-5 text-gray-500 text-sm leading-relaxed" style={{ fontWeight: 300 }}>
-          {a}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
   const { ref, isInView } = useInView();
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="py-24 bg-[#F8F6F0]" ref={ref as React.Ref<HTMLElement>}>
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`text-center mb-12 transition-all duration-700 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+    <section id="faq" className="py-16 sm:py-20 lg:py-32 bg-[#FFFFFF]" ref={ref}>
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
         >
           <span
-            className="text-[#D4AF37] text-[0.8rem] tracking-[0.2em] uppercase mb-3 block"
-            style={{ fontWeight: 600 }}
+            className="font-['Poppins'] text-[#D4AF37] tracking-[0.2em] uppercase mb-4 block"
+            style={{ fontSize: "0.813rem", fontWeight: 500 }}
           >
-            Questions Frequentes
+            Questions Fréquentes
           </span>
           <h2
-            className="text-black"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontWeight: 700,
-              fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
-            }}
+            className="font-['Playfair_Display'] text-[#000000] mb-4"
+            style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 600 }}
           >
-            Tout ce que vous voulez savoir
+            Tout savoir sur nos{" "}
+            <span className="text-[#D4AF37]">extensions</span>
           </h2>
-        </div>
+        </motion.div>
 
-        <div
-          className={`space-y-3 transition-all duration-700 delay-200 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          {faqs.map((faq, i) => (
-            <FAQItem
-              key={faq.q}
-              q={faq.q}
-              a={faq.a}
-              isOpen={openIndex === i}
-              onClick={() => setOpenIndex(openIndex === i ? null : i)}
-            />
+        {/* FAQ Items */}
+        <div className="space-y-3">
+          {faqs.map((faq, index) => (
+            <motion.div
+              key={faq.question}
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className={`rounded-2xl border transition-all duration-300 overflow-hidden ${
+                openIndex === index
+                  ? "border-[#D4AF37]/20 bg-[#F8F6F0] shadow-sm"
+                  : "border-[#F8F6F0] bg-white hover:border-[#D4AF37]/10"
+              }`}
+            >
+              <button
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="w-full flex items-center justify-between p-6 text-left bg-transparent border-none cursor-pointer"
+              >
+                <span
+                  className={`font-['Poppins'] pr-4 transition-colors ${
+                    openIndex === index ? "text-[#D4AF37]" : "text-[#000000]"
+                  }`}
+                  style={{ fontSize: "1rem", fontWeight: 500 }}
+                >
+                  {faq.question}
+                </span>
+                <ChevronDown
+                  className={`w-5 h-5 flex-shrink-0 transition-transform duration-300 ${
+                    openIndex === index ? "rotate-180 text-[#D4AF37]" : "text-[#666666]"
+                  }`}
+                />
+              </button>
+              <div
+                className={`overflow-hidden transition-all duration-300 ${
+                  openIndex === index ? "max-h-60" : "max-h-0"
+                }`}
+              >
+                <p
+                  className="px-6 pb-6 font-['Poppins'] text-[#666666]"
+                  style={{ fontSize: "0.938rem", fontWeight: 300, lineHeight: 1.8 }}
+                >
+                  {faq.answer}
+                </p>
+              </div>
+            </motion.div>
           ))}
         </div>
       </div>

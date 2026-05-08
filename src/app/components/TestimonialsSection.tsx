@@ -1,153 +1,319 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { useInView } from "./hooks/useInView";
+import { motion } from "motion/react";
 import { Star, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { useInView } from "./hooks/useInView";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
 
 const testimonials = [
   {
     name: "Sophie M.",
-    date: "Janvier 2026",
+    role: "Cliente fidèle depuis 2 ans",
+    text: "Je n'ai jamais eu d'aussi belles extensions ! Le salon est magnifique, l'équipe est aux petits soins. Mes cils tiennent incroyablement bien. Je recommande à 200% !",
     rating: 5,
-    technique: "Y Bresilienne",
-    text: "Absolument ravie ! Ma pose Y bresilienne est magnifique, tres naturelle. Je recois des compliments tous les jours. La prestataire est tres professionnelle et a l'ecoute. Je reviendrai sans hesiter !",
+    photo:
+      "https://images.unsplash.com/photo-1758845986246-9588d6dc4762?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHdvbWFuJTIwcG9ydHJhaXQlMjBzbWlsZSUyMG5hdHVyYWwlMjBsaWdodHxlbnwxfHx8fDE3NzA5MzE1OTh8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
   },
   {
-    name: "Camille R.",
-    date: "Decembre 2025",
+    name: "Camille D.",
+    role: "Pose Y Brésilienne",
+    text: "Résultat époustouflant ! Mes amies me demandent toutes où je fais mes cils. L'ambiance est si relaxante que je m'endors à chaque séance. Un vrai moment de bonheur.",
     rating: 5,
-    technique: "Cils a Cils",
-    text: "Premiere experience en extensions et je ne regrette absolument pas. Tres bons conseils, pose soignee, cadre agreable. Le resultat est exactement ce que je voulais : naturel et sublimant.",
+    photo:
+      "https://images.unsplash.com/photo-1768981402304-b5857fe32fb3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHBvcnRyYWl0JTIwZWxlZ2FudCUyMGJydW5ldHRlJTIwaGVhZHNob3R8ZW58MXx8fHwxNzcwOTMxNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
   },
   {
-    name: "Laure D.",
-    date: "Novembre 2025",
+    name: "Léa B.",
+    role: "Cils à Cils régulier",
+    text: "Professionnalisme, douceur et résultat au top ! La ciliériste a pris le temps de comprendre exactement ce que je voulais. Le mapping est parfait pour ma forme d'yeux.",
     rating: 5,
-    technique: "Y Bresilienne",
-    text: "Je suis cliente depuis 2 ans et je ne changerais pour rien au monde. Professionnalisme irreprochable, produits de qualite, resultat toujours parfait. La meilleure lash artist de Nimes !",
+    photo:
+      "https://images.unsplash.com/photo-1671766013824-22d2bbbac15b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMGJsb25kZSUyMHdvbWFuJTIwcG9ydHJhaXQlMjBvdXRkb29yJTIwc21pbGV8ZW58MXx8fHwxNzcwOTMxNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
   },
   {
-    name: "Manon T.",
-    date: "Octobre 2025",
+    name: "Marie-Claire R.",
+    role: "Pose classique",
+    text: "Enfin un salon qui prend soin de mes cils naturels tout en les sublimant ! Je ne mets plus de mascara et je gagne un temps fou le matin. Merci pour cette transformation !",
     rating: 5,
-    technique: "Cils a Cils",
-    text: "Super experience du debut a la fin. Accueil chaleureux, explication detaillee de la technique, pose impeccable. Mes cils sont magnifiques et ont tenu 4 semaines !",
+    photo:
+      "https://images.unsplash.com/photo-1761414500568-1348275e08a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYXR1cmUlMjB3b21hbiUyMHBvcnRyYWl0JTIwZWxlZ2FudCUyMHNvcGhpc3RpY2F0ZWR8ZW58MXx8fHwxNzcwOTMxNTk5fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
   },
   {
-    name: "Julie B.",
-    date: "Septembre 2025",
+    name: "Amira K.",
+    role: "Pose Y Brésilienne & entretien",
+    text: "Le meilleur salon d'Aix-en-Provence, sans hésitation. Des produits de qualité, une hygiène irréprochable et surtout un résultat qui dure. Je ne changerai pour rien au monde !",
     rating: 5,
-    technique: "Y Bresilienne",
-    text: "Je recommande vivement ! La pose est rapide et confortable. Le resultat est naturel mais transformateur. On voit la difference sans que ce soit exagere. Parfait pour tous les jours.",
+    photo:
+      "https://images.unsplash.com/photo-1770130173979-79e2e375893d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBlYXN0ZXJuJTIwd29tYW4lMjBwb3J0cmFpdCUyMGJlYXV0aWZ1bCUyMGhlYWRzaG90fGVufDF8fHx8MTc3MDkzMTYwMHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
   },
 ];
 
 export function TestimonialsSection() {
-  const [current, setCurrent] = useState(0);
   const { ref, isInView } = useInView();
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const prev = () => setCurrent((c) => (c - 1 + testimonials.length) % testimonials.length);
-  const next = () => setCurrent((c) => (c + 1) % testimonials.length);
+  const nextTestimonial = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
 
-  const visible = [
-    testimonials[current],
-    testimonials[(current + 1) % testimonials.length],
-    testimonials[(current + 2) % testimonials.length],
-  ];
+  const prevTestimonial = () => {
+    setCurrentIndex(
+      (prev) => (prev - 1 + testimonials.length) % testimonials.length
+    );
+  };
+
+  const getVisibleTestimonials = (count: number) => {
+    const items = [];
+    for (let i = 0; i < count; i++) {
+      items.push(testimonials[(currentIndex + i) % testimonials.length]);
+    }
+    return items;
+  };
 
   return (
-    <section id="temoignages" className="py-24 bg-black" ref={ref as React.Ref<HTMLElement>}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+    <section
+      id="avis"
+      className="py-16 sm:py-20 lg:py-32 bg-[#000000] relative overflow-hidden"
+      ref={ref}
+    >
+      {/* Decorative */}
+      <div className="absolute top-0 left-0 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-[#D4AF37]/5 blur-3xl -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute bottom-0 right-0 w-64 sm:w-96 h-64 sm:h-96 rounded-full bg-[#C9A96E]/5 blur-3xl translate-x-1/2 translate-y-1/2" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-10 sm:mb-16"
         >
           <span
-            className="text-[#D4AF37] text-[0.8rem] tracking-[0.2em] uppercase mb-3 block"
-            style={{ fontWeight: 600 }}
+            className="font-['Poppins'] text-[#C9A96E] tracking-[0.2em] uppercase mb-4 block"
+            style={{ fontSize: "0.813rem", fontWeight: 500 }}
           >
-            Temoignages
+            Témoignages
           </span>
           <h2
-            className="text-white mb-4"
+            className="font-['Playfair_Display'] text-white mb-4"
             style={{
-              fontFamily: "'Playfair Display', serif",
-              fontWeight: 700,
-              fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
+              fontSize: "clamp(1.75rem, 4vw, 2.75rem)",
+              fontWeight: 600,
             }}
           >
-            Ce Que Disent Nos Clientes
+            Ce que disent nos{" "}
+            <span className="text-[#D4AF37]">clientes</span>
           </h2>
-          <div className="flex items-center justify-center gap-1">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 text-[#D4AF37] fill-[#D4AF37]" />
-            ))}
-            <span className="text-white/50 text-sm ml-2">4.9/5 — 380+ avis</span>
-          </div>
-        </div>
-
-        <div
-          className={`transition-all duration-700 delay-200 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
-        >
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {visible.map((t, i) => (
-              <AnimatePresence key={`${current}-${i}`} mode="wait">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.4, delay: i * 0.1 }}
-                  className={`bg-white/5 border border-white/10 rounded-2xl p-6 ${i === 2 ? "hidden lg:block" : ""}`}
-                >
-                  <Quote className="w-6 h-6 text-[#D4AF37]/40 mb-4" />
-                  <p className="text-white/80 text-sm leading-relaxed mb-6" style={{ fontWeight: 300 }}>
-                    "{t.text}"
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-white text-sm font-semibold">{t.name}</div>
-                      <div className="text-white/40 text-xs mt-0.5">
-                        {t.technique} • {t.date}
-                      </div>
-                    </div>
-                    <div className="flex gap-0.5">
-                      {[...Array(t.rating)].map((_, i) => (
-                        <Star key={i} className="w-3.5 h-3.5 text-[#D4AF37] fill-[#D4AF37]" />
-                      ))}
-                    </div>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            ))}
-          </div>
-
-          <div className="flex items-center justify-center gap-4 mt-10">
-            <button
-              onClick={prev}
-              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5" />
-            </button>
-            <div className="flex gap-2">
-              {testimonials.map((_, i) => (
-                <button
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 mt-4">
+            <div className="flex -space-x-1">
+              {[...Array(5)].map((_, i) => (
+                <Star
                   key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    i === current ? "bg-[#D4AF37] w-6" : "bg-white/20"
-                  }`}
+                  className="w-4 sm:w-5 h-4 sm:h-5 text-[#D4AF37] fill-[#D4AF37]"
                 />
               ))}
             </div>
-            <button
-              onClick={next}
-              className="w-10 h-10 rounded-full border border-white/20 flex items-center justify-center text-white hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors"
+            <span
+              className="font-['Poppins'] text-white/60"
+              style={{ fontSize: "0.875rem", fontWeight: 400 }}
             >
-              <ChevronRight className="w-5 h-5" />
-            </button>
+              4.9/5 sur Google &mdash; 380+ avis
+            </span>
           </div>
+        </motion.div>
+
+        {/* Desktop: 3 cards */}
+        <div className="hidden lg:grid grid-cols-3 gap-6 mb-8">
+          {getVisibleTestimonials(3).map((testimonial, index) => (
+            <motion.div
+              key={`${testimonial.name}-${currentIndex}-lg`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+              className="bg-white/5 backdrop-blur-sm border border-[#D4AF37]/10 rounded-2xl p-8 relative"
+            >
+              <Quote className="w-8 h-8 text-[#D4AF37]/30 mb-4" />
+              <p
+                className="font-['Poppins'] text-white/80 mb-6"
+                style={{
+                  fontSize: "0.938rem",
+                  fontWeight: 300,
+                  lineHeight: 1.8,
+                }}
+              >
+                "{testimonial.text}"
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full overflow-hidden border-2 border-[#D4AF37]/30 flex-shrink-0">
+                  <ImageWithFallback
+                    src={testimonial.photo}
+                    alt={testimonial.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <span
+                    className="font-['Poppins'] text-white block truncate"
+                    style={{ fontSize: "0.875rem", fontWeight: 500 }}
+                  >
+                    {testimonial.name}
+                  </span>
+                  <span
+                    className="font-['Poppins'] text-white/40 block truncate"
+                    style={{ fontSize: "0.75rem", fontWeight: 400 }}
+                  >
+                    {testimonial.role}
+                  </span>
+                </div>
+                <div className="ml-auto flex -space-x-0.5 flex-shrink-0">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-3.5 h-3.5 text-[#D4AF37] fill-[#D4AF37]"
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Tablet: 2 cards */}
+        <div className="hidden md:grid lg:hidden grid-cols-2 gap-5 mb-8">
+          {getVisibleTestimonials(2).map((testimonial, index) => (
+            <motion.div
+              key={`${testimonial.name}-${currentIndex}-md`}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+              className="bg-white/5 backdrop-blur-sm border border-[#D4AF37]/10 rounded-2xl p-6 sm:p-8 relative"
+            >
+              <Quote className="w-7 h-7 text-[#D4AF37]/30 mb-3" />
+              <p
+                className="font-['Poppins'] text-white/80 mb-5"
+                style={{
+                  fontSize: "0.875rem",
+                  fontWeight: 300,
+                  lineHeight: 1.8,
+                }}
+              >
+                "{testimonial.text}"
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#D4AF37]/30 flex-shrink-0">
+                  <ImageWithFallback
+                    src={testimonial.photo}
+                    alt={testimonial.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="min-w-0">
+                  <span
+                    className="font-['Poppins'] text-white block truncate"
+                    style={{ fontSize: "0.875rem", fontWeight: 500 }}
+                  >
+                    {testimonial.name}
+                  </span>
+                  <span
+                    className="font-['Poppins'] text-white/40 block truncate"
+                    style={{ fontSize: "0.75rem", fontWeight: 400 }}
+                  >
+                    {testimonial.role}
+                  </span>
+                </div>
+                <div className="ml-auto flex -space-x-0.5 flex-shrink-0">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-3.5 h-3.5 text-[#D4AF37] fill-[#D4AF37]"
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Mobile: single card */}
+        <div className="md:hidden mb-8">
+          <motion.div
+            key={currentIndex}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.4 }}
+            className="bg-white/5 backdrop-blur-sm border border-[#D4AF37]/10 rounded-2xl p-6"
+          >
+            <Quote className="w-7 h-7 text-[#D4AF37]/30 mb-3" />
+            <p
+              className="font-['Poppins'] text-white/80 mb-5"
+              style={{
+                fontSize: "0.875rem",
+                fontWeight: 300,
+                lineHeight: 1.8,
+              }}
+            >
+              "{testimonials[currentIndex].text}"
+            </p>
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-[#D4AF37]/30 flex-shrink-0">
+                <ImageWithFallback
+                  src={testimonials[currentIndex].photo}
+                  alt={testimonials[currentIndex].name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                <span
+                  className="font-['Poppins'] text-white block"
+                  style={{ fontSize: "0.875rem", fontWeight: 500 }}
+                >
+                  {testimonials[currentIndex].name}
+                </span>
+                <span
+                  className="font-['Poppins'] text-white/40 block"
+                  style={{ fontSize: "0.75rem", fontWeight: 400 }}
+                >
+                  {testimonials[currentIndex].role}
+                </span>
+              </div>
+              <div className="flex -space-x-0.5 flex-shrink-0">
+                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-3.5 h-3.5 text-[#D4AF37] fill-[#D4AF37]"
+                  />
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-center gap-3 sm:gap-4">
+          <button
+            onClick={prevTestimonial}
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#D4AF37]/20 flex items-center justify-center text-white/60 hover:text-[#D4AF37] hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all bg-transparent cursor-pointer"
+          >
+            <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
+          <div className="flex gap-2">
+            {testimonials.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentIndex(i)}
+                className={`h-2 rounded-full transition-all duration-300 border-none cursor-pointer ${
+                  i === currentIndex
+                    ? "w-6 sm:w-8 bg-[#D4AF37]"
+                    : "w-2 bg-white/20 hover:bg-white/40"
+                }`}
+              />
+            ))}
+          </div>
+          <button
+            onClick={nextTestimonial}
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full border border-[#D4AF37]/20 flex items-center justify-center text-white/60 hover:text-[#D4AF37] hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all bg-transparent cursor-pointer"
+          >
+            <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+          </button>
         </div>
       </div>
     </section>

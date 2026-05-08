@@ -14,7 +14,7 @@ import { Footer } from "./components/Footer";
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-[#F8F6F0] overflow-x-hidden" style={{ fontFamily: "'Poppins', sans-serif" }}>
+    <div className="min-h-screen bg-[#F8F6F0] overflow-x-hidden font-['Poppins']">
       <Navbar />
       <HeroSection />
       <StatsSection />

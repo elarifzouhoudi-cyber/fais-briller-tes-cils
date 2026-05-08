@@ -1,34 +1,41 @@
+import { motion } from "motion/react";
+import { Check, Star, Sparkles } from "lucide-react";
 import { useInView } from "./hooks/useInView";
-import { Check } from "lucide-react";
 
-const pricingCards = [
+const pricingPlans = [
   {
-    name: "Cils a Cils",
-    subtitle: "Extension classique",
+    name: "Cils à Cils",
+    subtitle: "Effet naturel",
     price: "60",
-    duration: "2h30",
-    dark: false,
-    rows: [
-      { label: "Pose complete cils a cils", price: "60€" },
-      { label: "Remplissage 2 semaines", price: "40€" },
-      { label: "Remplissage 3 semaines", price: "45€" },
-      { label: "Depose seule", price: "20€" },
+    description: "Un regard sublimé au naturel, élégant au quotidien",
+    features: [
+      "1 cil synthétique par cil naturel",
+      "Durée : 2h30",
+      "Tenue : 3-4 semaines",
+      "Colle hypoallergénique",
+      "Diagnostic personnalisé",
+      "Choix courbure & longueur",
     ],
-    features: ["Colles hypoallergeniques", "Extensions soie premium", "Conseil personnalise"],
+    popular: false,
+    cta: "Réserver",
   },
   {
-    name: "Y Bresilienne",
-    subtitle: "Volume russe leger",
+    name: "Pose Y Brésilienne",
+    subtitle: "Best-seller",
     price: "80",
-    duration: "2h",
-    dark: true,
-    rows: [
-      { label: "Pose complete Y bresilienne", price: "80€" },
-      { label: "Remplissage 2 semaines", price: "50€" },
-      { label: "Remplissage 3 semaines", price: "55€" },
-      { label: "Depose seule", price: "20€" },
+    description: "Volume et intensité avec la technique brésilienne en Y",
+    features: [
+      "Technique Y brésilienne",
+      "Durée : 2h00",
+      "Tenue : 3-4 semaines",
+      "Colle premium longue durée",
+      "Diagnostic personnalisé",
+      "Effet volumineux & léger",
+      "Kit entretien offert",
+      "Retouche -20% sous 2 sem.",
     ],
-    features: ["Technique volume leger", "Extensions ultra-fines", "Rendu glamour naturel"],
+    popular: true,
+    cta: "Réserver",
   },
 ];
 
@@ -36,115 +43,162 @@ export function PricingSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section id="tarifs" className="py-24 bg-[#F8F6F0]" ref={ref as React.Ref<HTMLElement>}>
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+    <section id="tarifs" className="py-16 sm:py-20 lg:py-32 bg-[#F8F6F0]" ref={ref}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
         >
           <span
-            className="text-[#D4AF37] text-[0.8rem] tracking-[0.2em] uppercase mb-3 block"
-            style={{ fontWeight: 600 }}
+            className="font-['Poppins'] text-[#D4AF37] tracking-[0.2em] uppercase mb-4 block"
+            style={{ fontSize: "0.813rem", fontWeight: 500 }}
           >
-            Grille Tarifaire
+            Nos Tarifs
           </span>
           <h2
-            className="text-black mb-4"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontWeight: 700,
-              fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
-            }}
+            className="font-['Playfair_Display'] text-[#000000] mb-4"
+            style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 600 }}
           >
-            Des Tarifs Transparents
+            Des formules pour chaque{" "}
+            <span className="text-[#D4AF37]">envie</span>
           </h2>
-          <p className="text-gray-500" style={{ fontWeight: 300 }}>
-            Tous les tarifs incluent la consultation et les conseils d'entretien.
+          <p
+            className="font-['Poppins'] text-[#666666] max-w-xl mx-auto"
+            style={{ fontSize: "1rem", fontWeight: 300, lineHeight: 1.7 }}
+          >
+            Tarifs transparents, sans surprise. Choisissez la formule qui vous correspond.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {pricingCards.map((card, i) => (
-            <div
-              key={card.name}
-              className={`rounded-3xl overflow-hidden transition-all duration-700 ${
-                card.dark ? "bg-black text-white" : "bg-white text-black shadow-sm border border-gray-100"
-              } ${isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-              style={{ transitionDelay: `${i * 150}ms` }}
+        {/* Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
+          {pricingPlans.map((plan, index) => (
+            <motion.div
+              key={plan.name}
+              initial={{ opacity: 0, y: 40 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              className={`relative rounded-3xl p-8 lg:p-10 transition-all duration-500 hover:shadow-xl flex flex-col ${
+                plan.popular
+                  ? "bg-[#000000] text-white shadow-2xl shadow-[#000000]/20 scale-[1.02] lg:scale-105"
+                  : "bg-[#FFFFFF] border border-[#F8F6F0] hover:shadow-[#D4AF37]/10"
+              }`}
             >
-              <div className={`p-8 pb-6 border-b ${card.dark ? "border-white/10" : "border-gray-100"}`}>
-                <div
-                  className={`text-[0.75rem] tracking-[0.15em] uppercase mb-2 ${card.dark ? "text-[#D4AF37]" : "text-[#C9A96E]"}`}
-                  style={{ fontWeight: 600 }}
-                >
-                  {card.subtitle}
+              {plan.popular && (
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-[#D4AF37] text-[#000000] px-5 py-1.5 rounded-full">
+                  <Star className="w-3.5 h-3.5 fill-[#000000]" />
+                  <span className="font-['Poppins']" style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.05em" }}>
+                    BEST-SELLER
+                  </span>
+                </div>
+              )}
+
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Sparkles className="w-5 h-5 text-[#D4AF37]" />
+                  <span
+                    className={`font-['Poppins'] ${plan.popular ? "text-[#D4AF37]" : "text-[#C9A96E]"}`}
+                    style={{ fontSize: "0.75rem", fontWeight: 600, letterSpacing: "0.1em" }}
+                  >
+                    {plan.subtitle.toUpperCase()}
+                  </span>
                 </div>
                 <h3
-                  className="text-xl mb-4"
-                  style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700 }}
+                  className={`font-['Playfair_Display'] ${plan.popular ? "text-white" : "text-[#000000]"}`}
+                  style={{ fontSize: "1.5rem", fontWeight: 600 }}
                 >
-                  {card.name}
+                  {plan.name}
                 </h3>
+              </div>
+
+              {/* Price */}
+              <div className="mb-6">
                 <div className="flex items-baseline gap-1">
                   <span
-                    className={`text-3xl ${card.dark ? "text-[#D4AF37]" : "text-black"}`}
-                    style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700 }}
+                    className={`font-['Playfair_Display'] ${plan.popular ? "text-[#D4AF37]" : "text-[#000000]"}`}
+                    style={{ fontSize: "3rem", fontWeight: 700, lineHeight: 1 }}
                   >
-                    {card.price}€
+                    {plan.price}
                   </span>
-                  <span className={`text-sm ${card.dark ? "text-white/50" : "text-gray-400"}`}>
-                    pose complete
+                  <span
+                    className={`font-['Poppins'] ${plan.popular ? "text-white/60" : "text-[#666666]"}`}
+                    style={{ fontSize: "1rem", fontWeight: 400 }}
+                  >
+                    €
                   </span>
                 </div>
+                <p
+                  className={`font-['Poppins'] mt-2 ${plan.popular ? "text-white/60" : "text-[#666666]"}`}
+                  style={{ fontSize: "0.875rem", fontWeight: 300 }}
+                >
+                  {plan.description}
+                </p>
               </div>
 
-              <div className="p-8">
-                <div className="space-y-3 mb-6">
-                  {card.rows.map((row) => (
+              {/* Features */}
+              <ul className="space-y-3 mb-8 flex-1">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-start gap-3">
                     <div
-                      key={row.label}
-                      className={`flex justify-between text-sm py-2 border-b ${
-                        card.dark ? "border-white/5 text-white/80" : "border-gray-50 text-gray-600"
+                      className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 ${
+                        plan.popular ? "bg-[#D4AF37]/20" : "bg-[#F8F6F0]"
                       }`}
                     >
-                      <span style={{ fontWeight: 300 }}>{row.label}</span>
-                      <span
-                        className={card.dark ? "text-[#D4AF37]" : "text-black"}
-                        style={{ fontWeight: 600 }}
-                      >
-                        {row.price}
-                      </span>
+                      <Check className="w-3 h-3 text-[#D4AF37]" />
                     </div>
-                  ))}
-                </div>
+                    <span
+                      className={`font-['Poppins'] ${plan.popular ? "text-white/80" : "text-[#666666]"}`}
+                      style={{ fontSize: "0.875rem", fontWeight: 400 }}
+                    >
+                      {feature}
+                    </span>
+                  </li>
+                ))}
+              </ul>
 
-                <div className="space-y-2 mb-6">
-                  {card.features.map((feat) => (
-                    <div key={feat} className="flex items-center gap-2 text-sm">
-                      <Check className={`w-4 h-4 shrink-0 ${card.dark ? "text-[#D4AF37]" : "text-[#D4AF37]"}`} />
-                      <span className={card.dark ? "text-white/70" : "text-gray-500"} style={{ fontWeight: 300 }}>
-                        {feat}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <a
-                  href="tel:+33616745074"
-                  className={`block w-full text-center py-3.5 rounded-full text-sm transition-all hover:scale-105 ${
-                    card.dark
-                      ? "bg-[#D4AF37] text-black hover:bg-[#C9A96E]"
-                      : "bg-black text-white hover:bg-gray-800"
-                  }`}
-                  style={{ fontWeight: 600 }}
-                >
-                  Prendre Rendez-vous
-                </a>
-              </div>
-            </div>
+              {/* CTA */}
+              <a
+                href="tel:+33616745074"
+                className={`block text-center py-4 rounded-full font-['Poppins'] transition-all duration-300 no-underline ${
+                  plan.popular
+                    ? "bg-[#D4AF37] text-[#000000] hover:bg-[#C9A96E] hover:shadow-lg hover:shadow-[#D4AF37]/30"
+                    : "bg-[#000000] text-white hover:bg-[#1a1a1a] hover:shadow-lg"
+                }`}
+                style={{ fontSize: "0.938rem", fontWeight: 500 }}
+              >
+                {plan.cta}
+              </a>
+            </motion.div>
           ))}
         </div>
+
+        {/* Additional services */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-12 grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-4xl mx-auto"
+        >
+          {[
+            { service: "Remplissage 2-3 semaines", price: "40-55€" },
+            { service: "Dépose complète", price: "20€" },
+          ].map((item) => (
+            <div
+              key={item.service}
+              className="flex items-center justify-between bg-[#FFFFFF] rounded-xl px-6 py-4 border border-[#F8F6F0]"
+            >
+              <span className="font-['Poppins'] text-[#000000]" style={{ fontSize: "0.875rem", fontWeight: 400 }}>
+                {item.service}
+              </span>
+              <span className="font-['Poppins'] text-[#D4AF37]" style={{ fontSize: "0.938rem", fontWeight: 600 }}>
+                {item.price}
+              </span>
+            </div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

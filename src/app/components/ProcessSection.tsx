@@ -1,25 +1,31 @@
+import { motion } from "motion/react";
+import { MessageCircle, Search, Sparkles, Heart } from "lucide-react";
 import { useInView } from "./hooks/useInView";
 
 const steps = [
   {
-    number: "01",
+    icon: MessageCircle,
+    step: "01",
     title: "Consultation",
-    desc: "On discute ensemble de vos attentes, de votre morphologie et de vos cils naturels pour definir la technique la plus adaptee.",
+    description: "Échange personnalisé pour comprendre vos envies et analyser vos cils naturels.",
   },
   {
-    number: "02",
+    icon: Search,
+    step: "02",
     title: "Diagnostic",
-    desc: "Bilan de sante de vos cils naturels. Choix de la longueur, courbure et epaisseur des extensions selon votre profil.",
+    description: "Choix de la courbure, longueur et épaisseur adaptées à votre morphologie.",
   },
   {
-    number: "03",
+    icon: Sparkles,
+    step: "03",
     title: "La Pose",
-    desc: "En position allongee, dans un espace calme et confortable. Chaque extension posee avec precision et soin.",
+    description: "Installation confortable, pose minutieuse cil par cil dans un cadre apaisant.",
   },
   {
-    number: "04",
-    title: "Le Resultat",
-    desc: "Un regard transforme, naturel et durable. Conseils d'entretien personnalises pour maximiser la longevite.",
+    icon: Heart,
+    step: "04",
+    title: "Le Résultat",
+    description: "Un regard sublime et naturel. Conseils d'entretien pour une tenue optimale.",
   },
 ];
 
@@ -27,61 +33,74 @@ export function ProcessSection() {
   const { ref, isInView } = useInView();
 
   return (
-    <section className="py-24 bg-[#F8F6F0]" ref={ref as React.Ref<HTMLElement>}>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div
-          className={`text-center mb-16 transition-all duration-700 ${
-            isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-          }`}
+    <section className="py-16 sm:py-20 lg:py-32 bg-[#F8F6F0]" ref={ref}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8 }}
+          className="text-center mb-16"
         >
           <span
-            className="text-[#D4AF37] text-[0.8rem] tracking-[0.2em] uppercase mb-3 block"
-            style={{ fontWeight: 600 }}
+            className="font-['Poppins'] text-[#D4AF37] tracking-[0.2em] uppercase mb-4 block"
+            style={{ fontSize: "0.813rem", fontWeight: 500 }}
           >
-            Notre Methode
+            Comment ça marche
           </span>
           <h2
-            className="text-black"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontWeight: 700,
-              fontSize: "clamp(1.8rem, 3vw, 2.5rem)",
-            }}
+            className="font-['Playfair_Display'] text-[#000000] mb-4"
+            style={{ fontSize: "clamp(1.75rem, 4vw, 2.75rem)", fontWeight: 600 }}
           >
-            Le Deroulement de Votre Pose
+            Votre expérience en{" "}
+            <span className="text-[#D4AF37]">4 étapes</span>
           </h2>
-        </div>
+        </motion.div>
 
-        <div className="relative">
-          <div className="hidden lg:block absolute top-8 left-0 right-0 h-0.5 bg-[#D4AF37]/20" style={{ top: "2rem" }} />
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {steps.map((step, i) => (
-              <div
-                key={step.number}
-                className={`relative text-center transition-all duration-700 ${
-                  isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-                }`}
-                style={{ transitionDelay: `${i * 150}ms` }}
+        {/* Steps */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+          {/* Connecting line - desktop only */}
+          <div className="hidden lg:block absolute top-16 left-[12.5%] right-[12.5%] h-px bg-[#D4AF37]/15" />
+
+          {steps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <motion.div
+                key={step.step}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+                className="text-center relative"
               >
-                <div className="relative inline-flex items-center justify-center w-16 h-16 rounded-full bg-black text-[#D4AF37] mb-5 mx-auto">
-                  <span
-                    style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "1.1rem" }}
+                {/* Circle with icon */}
+                <div className="relative inline-flex mb-6">
+                  <div className="w-20 h-20 rounded-full bg-white border-2 border-[#D4AF37]/20 flex items-center justify-center shadow-lg shadow-[#D4AF37]/5 relative z-10">
+                    <Icon className="w-7 h-7 text-[#D4AF37]" />
+                  </div>
+                  <div
+                    className="absolute -top-2 -right-2 w-8 h-8 rounded-full bg-[#000000] flex items-center justify-center z-20"
                   >
-                    {step.number}
-                  </span>
+                    <span className="font-['Poppins'] text-[#D4AF37]" style={{ fontSize: "0.688rem", fontWeight: 700 }}>
+                      {step.step}
+                    </span>
+                  </div>
                 </div>
+
                 <h3
-                  className="text-black mb-3 text-lg"
-                  style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600 }}
+                  className="font-['Playfair_Display'] text-[#000000] mb-3"
+                  style={{ fontSize: "1.25rem", fontWeight: 600 }}
                 >
                   {step.title}
                 </h3>
-                <p className="text-gray-500 text-sm leading-relaxed" style={{ fontWeight: 300 }}>
-                  {step.desc}
+                <p
+                  className="font-['Poppins'] text-[#666666] max-w-xs mx-auto"
+                  style={{ fontSize: "0.875rem", fontWeight: 300, lineHeight: 1.7 }}
+                >
+                  {step.description}
                 </p>
-              </div>
-            ))}
-          </div>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

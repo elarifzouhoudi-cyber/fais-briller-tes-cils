@@ -1,62 +1,79 @@
+import { motion } from "motion/react";
+import { Phone, Calendar, ArrowRight } from "lucide-react";
 import { useInView } from "./hooks/useInView";
-import { Phone, Tag } from "lucide-react";
+import { ImageWithFallback } from "./figma/ImageWithFallback";
+
+const BG_IMG = "https://images.unsplash.com/photo-1596178060671-7a80dc8059ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxiZWF1dHklMjB0cmVhdG1lbnQlMjBzcGElMjByZWxheGF0aW9uJTIwd29tYW58ZW58MXx8fHwxNzcwODg2NDM4fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral";
 
 export function BookingCTA() {
   const { ref, isInView } = useInView();
 
   return (
-    <section
-      className="relative py-28 overflow-hidden"
-      ref={ref as React.Ref<HTMLElement>}
-    >
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?w=1920&q=80')",
-        }}
-      />
-      <div className="absolute inset-0 bg-black/70" />
+    <section className="py-16 sm:py-20 lg:py-32 bg-[#F8F6F0] relative" ref={ref}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative rounded-3xl overflow-hidden">
+          {/* Background Image */}
+          <div className="absolute inset-0">
+            <ImageWithFallback
+              src={BG_IMG}
+              alt="Réservation"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#000000]/90 to-[#000000]/70" />
+          </div>
 
-      <div
-        className={`relative z-10 max-w-2xl mx-auto px-4 sm:px-6 text-center transition-all duration-800 ${
-          isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
-      >
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#D4AF37]/20 border border-[#D4AF37]/40 text-[#D4AF37] text-sm mb-8">
-          <Tag className="w-4 h-4" />
-          <span style={{ fontWeight: 600 }}>OFFRE DECOUVERTE — -10% sur votre premiere pose</span>
+          {/* Content */}
+          <div className="relative z-10 py-12 px-6 sm:py-16 sm:px-8 lg:py-24 lg:px-16">
+            <div className="max-w-xl">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8 }}
+              >
+                <span
+                  className="font-['Poppins'] text-[#C9A96E] tracking-[0.2em] uppercase mb-4 block"
+                  style={{ fontSize: "0.813rem", fontWeight: 500 }}
+                >
+                  Prendre Rendez-vous
+                </span>
+                <h2
+                  className="font-['Playfair_Display'] text-white mb-6"
+                  style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 600, lineHeight: 1.2 }}
+                >
+                  Prête à sublimer votre{" "}
+                  <span className="text-[#D4AF37]">regard</span> ?
+                </h2>
+                <p
+                  className="font-['Poppins'] text-white/70 mb-8"
+                  style={{ fontSize: "1rem", fontWeight: 300, lineHeight: 1.8 }}
+                >
+                  Réservez votre séance dès maintenant et bénéficiez de -10% sur votre première pose.
+                  Notre équipe vous accueille du lundi au samedi.
+                </p>
+
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a
+                    href="tel:+33616745074"
+                    className="inline-flex items-center justify-center gap-2 bg-[#D4AF37] text-[#000000] px-8 py-4 rounded-full hover:bg-[#C9A96E] transition-all duration-300 hover:shadow-xl hover:shadow-[#D4AF37]/30 font-['Poppins'] no-underline group"
+                    style={{ fontSize: "1rem", fontWeight: 500 }}
+                  >
+                    <Phone className="w-4 h-4" />
+                    06 16 74 50 74
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </a>
+                  <a
+                    href="#contact"
+                    className="inline-flex items-center justify-center gap-2 border-2 border-[#D4AF37]/30 text-white px-8 py-4 rounded-full hover:bg-[#D4AF37]/10 transition-all duration-300 font-['Poppins'] no-underline"
+                    style={{ fontSize: "1rem", fontWeight: 400 }}
+                  >
+                    <Calendar className="w-4 h-4" />
+                    Voir les horaires
+                  </a>
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </div>
-
-        <h2
-          className="text-white mb-4"
-          style={{
-            fontFamily: "'Playfair Display', serif",
-            fontWeight: 700,
-            fontSize: "clamp(2rem, 4vw, 3rem)",
-            lineHeight: 1.2,
-          }}
-        >
-          Prête a Sublimer<br />
-          <em>Votre Regard ?</em>
-        </h2>
-
-        <p className="text-white/70 mb-10" style={{ fontWeight: 300, fontSize: "1.05rem" }}>
-          Appelez directement pour reserver votre créneau. Reponse rapide garantie.
-        </p>
-
-        <a
-          href="tel:+33616745074"
-          className="inline-flex items-center gap-3 px-10 py-4 bg-[#D4AF37] text-black rounded-full hover:bg-[#C9A96E] transition-all hover:scale-105"
-          style={{ fontWeight: 700, fontSize: "1.1rem" }}
-        >
-          <Phone className="w-5 h-5" />
-          +33 6 16 74 50 74
-        </a>
-
-        <p className="text-white/40 text-sm mt-4" style={{ fontWeight: 300 }}>
-          Lun-Sam · 9h-19h · Reponse sous 2h
-        </p>
       </div>
     </section>
   );
